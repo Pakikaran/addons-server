@@ -42,9 +42,9 @@ class Command(BaseCommand):
             raise CommandError('You can only run this command with your '
                                'DEBUG setting set to True.')
 
-        translation.activate(settings.LANGUAGE_CODE)
-
         num = int(args[0])
         email = kwargs.get('email')
         app_name = kwargs.get('app_name')
-        generate_addons(num, email, app_name)
+
+        with translation.override(settings.LANGUAGE_CODE):
+            generate_addons(num, email, app_name)

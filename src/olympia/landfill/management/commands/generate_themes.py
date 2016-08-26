@@ -39,6 +39,5 @@ class Command(BaseCommand):
         num = int(args[0])
         email = kwargs.get('email')
 
-        translation.activate(settings.LANGUAGE_CODE)
-
-        generate_themes(num, email)
+        with translation.override(settings.LANGUAGE_CODE):
+            generate_themes(num, email)
