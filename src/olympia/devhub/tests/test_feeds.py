@@ -174,7 +174,7 @@ class TestActivity(HubTest):
         # This will give us a new RssKey
         r = self.get_response()
         key = RssKey.objects.get()
-        r = self.get_response(privaterss=key.key)
+        r = self.get_response(privaterss=key.key.hex)
         assert r['content-type'] == 'application/rss+xml; charset=utf-8'
         assert '<title>Recent Changes for My Add-ons</title>' in r.content
 
@@ -185,7 +185,7 @@ class TestActivity(HubTest):
         # This will give us a new RssKey
         r = self.get_response(addon=self.addon.id)
         key = RssKey.objects.get()
-        r = self.get_response(privaterss=key.key)
+        r = self.get_response(privaterss=key.key.hex)
         assert r['content-type'] == 'application/rss+xml; charset=utf-8'
         assert len(pq(r.content)('item')) == 5
         assert '<title>Recent Changes for %s</title>' % self.addon in r.content
@@ -198,7 +198,7 @@ class TestActivity(HubTest):
         # This will give us a new RssKey
         self.get_response(addon=self.addon.id)
         key = RssKey.objects.get()
-        response = self.get_response(privaterss=key.key)
+        response = self.get_response(privaterss=key.key.hex)
         assert len(pq(response.content)('item')) == 5
 
     def test_logged_out(self):
@@ -277,12 +277,12 @@ class TestActivity(HubTest):
         amo.log(amo.LOG.COMMENT_VERSION, self.addon, version)
         res = self.get_response(addon=self.addon.id)
         key = RssKey.objects.get()
-        res = self.get_response(privaterss=key.key)
+        res = self.get_response(privaterss=key.key.hex)
         assert "<title>Comment on" not in res.content
 
     def test_no_guid(self):
         self.log_creates(1)
         self.get_response(addon=self.addon.id)
         key = RssKey.objects.get()
-        res = self.get_response(privaterss=key.key)
+        res = self.get_response(privaterss=key.key.hex)
         assert "<guid>" not in res.content
