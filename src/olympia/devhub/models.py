@@ -30,7 +30,11 @@ log = commonware.log.getLogger('devhub')
 
 
 class RssKey(models.Model):
-    key = models.UUIDField(db_column='rsskey', default=uuid.uuid4, unique=True)
+    # TODO: Convert to `models.UUIDField` but apparently we have a max_length
+    # of 36 defined in the database and maybe store things with a hyphen
+    # or maybe not...
+    key = models.CharField(
+        db_column='rsskey', max_length=36, default=uuid.uuid4, unique=True)
     addon = models.ForeignKey(Addon, null=True, unique=True)
     user = models.ForeignKey(UserProfile, null=True, unique=True)
     created = models.DateField(default=datetime.now)
