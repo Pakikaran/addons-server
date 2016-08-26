@@ -1405,10 +1405,10 @@ def version_stats(request, addon_id, addon):
         qs
         .annotate(file_count=Count('files'))
         .values_list('id', 'file_count'))
-    for id, file_count in files:
+    for id_, file_count in files:
         # For backwards compatibility
-        d[id]['files'] = file_count
-        d[id]['reviews'] = d[id].pop('review_count')
+        d[id_]['files'] = file_count
+        d[id_]['reviews'] = d[id_].pop('review_count')
     return d
 
 
