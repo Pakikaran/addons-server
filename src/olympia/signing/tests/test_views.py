@@ -507,7 +507,8 @@ class TestCheckVersion(BaseUploadVersionCase):
         upload = FileUpload.objects.latest()
 
         # Check that the user that created the upload can access it properly.
-        response = self.get(self.url('@create-version', '1.0', upload.uuid.hex))
+        response = self.get(
+            self.url('@create-version', '1.0', upload.uuid.hex))
         assert response.status_code == 200
         assert 'processed' in response.data
 
