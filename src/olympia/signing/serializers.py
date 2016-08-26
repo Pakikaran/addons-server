@@ -17,7 +17,7 @@ class FileUploadSerializer(serializers.ModelSerializer):
     passed_review = serializers.SerializerMethodField()
 
     # For backwards-compatibility reasons, we return the uuid as "pk".
-    pk = serializers.CharField(source='uuid')
+    pk = serializers.UUIDField(source='uuid', format='hex')
     processed = serializers.BooleanField()
     reviewed = serializers.SerializerMethodField()
     valid = serializers.BooleanField(source='passed_all_validations')
